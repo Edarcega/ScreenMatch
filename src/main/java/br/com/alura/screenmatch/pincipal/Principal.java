@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch.pincipal;
 
+import br.com.alura.screenmatch.model.DadosEpisodio;
 import br.com.alura.screenmatch.model.DadosSerie;
 import br.com.alura.screenmatch.model.DadosTemporada;
 import br.com.alura.screenmatch.service.ConsumoAPI;
@@ -42,6 +43,19 @@ public class Principal {
 //       o conteúdo de cada temporada no console. É uma forma mais concisa e legível de escrever:
 //       temporadas.forEach(x -> System.out.println(x));
         temporadas.forEach(System.out::println);
+
+//        for (int i = 0; i < dados.totalTemporadas();i++) {
+//            List<DadosEpisodio> episodiosTemporada = temporadas.get(i).episodios();
+//            for (int j = 0; j < episodiosTemporada.size(); j++) {
+//                System.out.println(episodiosTemporada.get(j).titulo());
+//            }
+//        }
+
+        // Melhor maneira de implementar a interação entre as listas
+
+        temporadas.forEach(t -> t.episodios().forEach(System.out::println));
+
+
     }
 
 }
