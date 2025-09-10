@@ -7,8 +7,10 @@ import br.com.alura.screenmatch.service.ConsumoAPI;
 import br.com.alura.screenmatch.service.ConverteDados;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -24,6 +26,7 @@ public class Principal {
         var nomeSerie = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
         DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
+        // imprime dados da serie
         System.out.println(dados);
 
         List<DadosTemporada> temporadas = new ArrayList<>();
@@ -55,7 +58,17 @@ public class Principal {
 
         temporadas.forEach(t -> t.episodios().forEach(System.out::println));
 
+        List<DadosEpisodio> dadosEpisodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream())
+                .collect(Collectors.toList());
 
+        System.out.println("\n Top 5 episódios");
+
+        dadosEpisodios.stream()
+                .filter( e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+                .limit(5)
+                .forEach(System.out::println);
     }
 
 }
