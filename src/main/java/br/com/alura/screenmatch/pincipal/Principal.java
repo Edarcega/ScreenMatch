@@ -3,9 +3,11 @@ package br.com.alura.screenmatch.pincipal;
 import br.com.alura.screenmatch.model.DadosEpisodio;
 import br.com.alura.screenmatch.model.DadosSerie;
 import br.com.alura.screenmatch.model.DadosTemporada;
+import br.com.alura.screenmatch.model.Episodios;
 import br.com.alura.screenmatch.service.ConsumoAPI;
 import br.com.alura.screenmatch.service.ConverteDados;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -69,6 +71,21 @@ public class Principal {
                 .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+    /*
+    Crair uma lista de episódios e tratar as exceções dentro do proprio construtor
+    depois instanciar os episódios a partir da lista de temporadas e apresentar a lista na tela já com os atributos tratados
+     */
+
+        List<Episodios> episodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()
+                        .map(d -> new Episodios(t.numero(), d))).collect(Collectors.toList());
+        System.out.println("-- Episodios --");
+        episodios.forEach(System.out::println);
+
+        System.out.println("A partir de que ano você deseja ver os episódios? ");
+        var ano = leitura.nextInt();
+        leitura.nextLine();
+        LocalDate dataBusca = LocalDate.of(ano , 1,1);
     }
 
 }
